@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h3>Financial Overview</h3>
+        <div class="row">
+            <div class="col-md-4">
+                <h4>Income Summary</h4>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Source</th>
+                            <th>Total Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% set income_summary = {} %}
+                        {% for income in incomes %}
+                            {% if income.source not in income_summary %}
+                                {% set _ = income_summary.update({income.source: 0}) %}
+                            {% endif %}
+                            {% set _ = income_summary.update({income.source: income_summary[income.source] + income.amount}) %}
+                        {% endfor %}
+                        {% for source, total in income_summary.items() %}
+                        <tr>
+                            <td>{{ source }}</td>
+                            <td>$ {{ total|round(2) }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-4">
+                <h4>Expense Summary</h4>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Total Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% set expense_summary = {} %}
+                        {% for expense in expenses %}
+                            {% if expense.category not in expense_summary %}
+                                {% set _ = expense_summary.update({expense.category: 0}) %}
+                            {% endif %}
+                            {% set _ = expense_summary.update({expense.category: expense_summary[expense.category] + expense.amount}) %}
+                        {% endfor %}
+                        {% for category, total in expense_summary.items() %}
+                        <tr>
+                            <td>{{ category }}</td>
+                            <td>$ {{ total|round(2) }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-4">
+                <h4>Budget Allocation</h4>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Allocated</th>
+                            <th>Spent</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for budget in budgets %}
+                        <tr>
+                            <td>{{ budget.category }}</td>
+                            <td>$ {{ budget.allocated_amount }}</td>
+                            <td>$ {{ expense_summary.get(budget.category, 0)|round(2) }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <h3>Add Income</h3>
+        <form method="POST">
+            <div class="mb-3">
+                <label for="source" class="form-label">Source</label>
+                <input type="text" class="form-control" id="source" name="source" required>
+            </div>
+            <div class="mb-3">
+                <label for="amount" class="form-label">Amount</label>
+                <input type="number" step="0.01" class="form-control" id="amount" name="amount" required>
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Income</button>
+        </form>
+    </div>
+    <div class="col-md-8">
+        <h3>Income History</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Source</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for income in incomes %}
+                <tr>
+                    <td>{{ income.source }}</td>
+                    <td>$ {{ income.amount }}</td>
+                    <td>{{ income.date.strftime('%Y-%m-%d') }}</td>
+                    <td>{{ income.description or 'N/A' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

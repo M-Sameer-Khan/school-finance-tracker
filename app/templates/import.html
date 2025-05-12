@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">Import Excel File</div>
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="file" class="form-label">Excel File</label>
+                        <input type="file" class="form-control" id="file" name="file" accept=".xlsx,.xls" required>
+                        <small class="form-text text-muted">
+                            Upload an Excel file with sheets named 'Income', 'Expenses', and 'Budget'.
+                            <br>Expected columns:
+                            <br>Income: Source, Amount, Date, Description
+                            <br>Expenses: Category, Amount, Date, Description
+                            <br>Budget: Category, Allocated Amount, Fiscal Year, Description
+                        </small>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Import</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
