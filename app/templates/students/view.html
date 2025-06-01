@@ -1,0 +1,217 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Student Profile</h1>
+        <div>
+            <a href="{{ url_for('edit_student', student_id=student.id) }}" class="btn btn-warning">
+                <i class="fas fa-edit"></i> Edit
+            </a>
+            <a href="{{ url_for('list_students') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to List
+            </a>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Basic Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <h6 class="fw-bold">G.R Number:</h6>
+                        <p>{{ student.gr_number }}</p>
+                    </div>
+                    <div class="mb-3">
+                        <h6 class="fw-bold">Student Name:</h6>
+                        <p>{{ student.name }}</p>
+                    </div>
+                    <div class="mb-3">
+                        <h6 class="fw-bold">Father Name:</h6>
+                        <p>{{ student.father_name }}</p>
+                    </div>
+                    <div class="mb-3">
+                        <h6 class="fw-bold">Class:</h6>
+                        <p>{{ student.class_name }}</p>
+                    </div>
+                    <div class="mb-3">
+                        <h6 class="fw-bold">Admission Date:</h6>
+                        <p>{{ student.admission_date.strftime('%d-%m-%Y') }}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">Personal Details</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <h6 class="fw-bold">Date of Birth:</h6>
+                        <p>{{ student.dob.strftime('%d-%m-%Y') if student.dob else 'N/A' }}</p>
+                    </div>
+                    <div class="mb-3">
+                        <h6 class="fw-bold">Gender:</h6>
+                        <p>{{ student.gender }}</p>
+                    </div>
+                    <div class="mb-3">
+                        <h6 class="fw-bold">Nationality:</h6>
+                        <p>{{ student.nationality or 'N/A' }}</p>
+                    </div>
+                    <div class="mb-3">
+                        <h6 class="fw-bold">Religion:</h6>
+                        <p>{{ student.religion or 'N/A' }}</p>
+                    </div>
+                    <div class="mb-3">
+                        <h6 class="fw-bold">CNIC/Bay-Form:</h6>
+                        <p>{{ student.cnic or 'N/A' }}</p>
+                    </div>
+                    <div class="mb-3">
+                        <h6 class="fw-bold">Address:</h6>
+                        <p>{{ student.address }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Fee Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info">
+                        <h6 class="mb-0">Monthly Fee: Rs. {{ monthly_fee }}</h6>
+                    </div>
+                    
+                    <h6 class="mb-3">Fee Status for {{ fee_calendar[0].year if fee_calendar else 'Current Year' }}</h6>
+                    
+                    <div class="row">
+                        {% for month in fee_calendar %}
+                        <div class="col-md-3 col-sm-4 mb-3">
+                            <div class="card 
+                                {% if month.status == 'Paid' %}
+                                bg-success text-white
+                                {% elif month.status == 'Partially Paid' %}
+                                bg-warning
+                                {% else %}
+                                bg-danger text-white
+                                {% endif %}
+                                ">
+                                <div class="card-body p-2 text-center">
+                                    <h6 class="mb-0">{{ month.month_name }}</h6>
+                                    <small>{{ month.status }}</small>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="mt-4 d-flex justify-content-end">
+                        <a href="{{ url_for('collect_fee', student_id=student.id) }}" class="btn btn-success">
+                            <i class="fas fa-money-bill-wave"></i> Collect Fee
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0">Fee Payment History</h5>
+                </div>
+                <div class="card-body">
+                    {% if fee_payments %}
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Month/Year</th>
+                                    <th>Amount</th>
+                                    <th>Payment Date</th>
+                                    <th>Status</th>
+                                    <th>Receipt #</th>
+                                    <th>Method</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for payment in fee_payments %}
+                                <tr>
+                                    <td>
+                                        {% set month_names = ['January', 'February', 'March', 'April', 'May', 'June', 
+                                                             'July', 'August', 'September', 'October', 'November', 'December'] %}
+                                        {{ month_names[payment.month-1] }}/{{ payment.year }}
+                                    </td>
+                                    <td>Rs. {{ payment.amount }}</td>
+                                    <td>{{ payment.payment_date.strftime('%d-%m-%Y') }}</td>
+                                    <td>
+                                        <span class="badge 
+                                            {% if payment.payment_status == 'Paid' %}
+                                            bg-success
+                                            {% elif payment.payment_status == 'Partially Paid' %}
+                                            bg-warning
+                                            {% else %}
+                                            bg-danger
+                                            {% endif %}
+                                            ">
+                                            {{ payment.payment_status }}
+                                        </span>
+                                    </td>
+                                    <td>{{ payment.receipt_number or 'N/A' }}</td>
+                                    <td>{{ payment.payment_method }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="alert alert-info">
+                        No fee payment records found.
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Guardian Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <h6 class="fw-bold">Guardian Type:</h6>
+                                <p>{{ student.guardian_type or 'Parent' }}</p>
+                            </div>
+                            <div class="mb-3">
+                                <h6 class="fw-bold">Guardian Name:</h6>
+                                <p>{{ student.guardian_name }}</p>
+                            </div>
+                            <div class="mb-3">
+                                <h6 class="fw-bold">Relation:</h6>
+                                <p>{{ student.guardian_relation or 'N/A' }}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <h6 class="fw-bold">Phone:</h6>
+                                <p>{{ student.guardian_phone }}</p>
+                            </div>
+                            <div class="mb-3">
+                                <h6 class="fw-bold">Email:</h6>
+                                <p>{{ student.guardian_email or 'N/A' }}</p>
+                            </div>
+                            <div class="mb-3">
+                                <h6 class="fw-bold">Occupation:</h6>
+                                <p>{{ student.guardian_occupation or 'N/A' }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

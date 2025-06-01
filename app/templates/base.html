@@ -121,6 +121,20 @@
                            </svg>
                            Expenses
                         </a>
+                        <a href="{{ url_for('list_students') }}" 
+                           class="nav-link text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300 flex items-center">
+                           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                           </svg>
+                           Students
+                        </a>
+                        <a href="{{ url_for('fee_dashboard') }}" 
+                           class="nav-link text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300 flex items-center">
+                           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                           </svg>
+                           Fee Management
+                        </a>
                         <a href="{{ url_for('manage_budget') }}" 
                            class="nav-link text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300 flex items-center">
                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1 text-finance-budget" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -219,6 +233,8 @@
                         <li><a href="{{ url_for('index') }}" class="text-gray-400 hover:text-white transition-colors duration-200">Dashboard</a></li>
                         <li><a href="{{ url_for('manage_income') }}" class="text-gray-400 hover:text-white transition-colors duration-200">Income</a></li>
                         <li><a href="{{ url_for('manage_expenses') }}" class="text-gray-400 hover:text-white transition-colors duration-200">Expenses</a></li>
+                        <li><a href="{{ url_for('list_students') }}" class="text-gray-400 hover:text-white transition-colors duration-200">Students</a></li>
+                        <li><a href="{{ url_for('fee_dashboard') }}" class="text-gray-400 hover:text-white transition-colors duration-200">Fee Management</a></li>
                     </ul>
                 </div>
                 <div>

@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header bg-success text-white">
+            <h3 class="mb-0">Collect Fee - {{ student.name }}</h3>
+        </div>
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">Student Information</h5>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>GR Number:</strong> {{ student.gr_number }}</p>
+                            <p><strong>Name:</strong> {{ student.name }}</p>
+                            <p><strong>Father:</strong> {{ student.father_name }}</p>
+                            <p><strong>Class:</strong> {{ student.class_name }}</p>
+                            <p><strong>Monthly Fee:</strong> Rs. {{ monthly_fee }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <form method="POST" action="{{ url_for('collect_fee', student_id=student.id) }}">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="card">
+                            <div class="card-header bg-info">
+                                <h5 class="mb-0">Payment Details</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Month <span class="text-danger">*</span></label>
+                                        {{ form.month(class="form-select") }}
+                                        {% if form.month.errors %}
+                                        <div class="text-danger">
+                                            {% for error in form.month.errors %}
+                                            <small>{{ error }}</small>
+                                            {% endfor %}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Year <span class="text-danger">*</span></label>
+                                        {{ form.year(class="form-select") }}
+                                        {% if form.year.errors %}
+                                        <div class="text-danger">
+                                            {% for error in form.year.errors %}
+                                            <small>{{ error }}</small>
+                                            {% endfor %}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Amount <span class="text-danger">*</span></label>
+                                        {{ form.amount(class="form-control", value=monthly_fee) }}
+                                        {% if form.amount.errors %}
+                                        <div class="text-danger">
+                                            {% for error in form.amount.errors %}
+                                            <small>{{ error }}</small>
+                                            {% endfor %}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Payment Date <span class="text-danger">*</span></label>
+                                        {{ form.payment_date(class="form-control", type="date") }}
+                                        {% if form.payment_date.errors %}
+                                        <div class="text-danger">
+                                            {% for error in form.payment_date.errors %}
+                                            <small>{{ error }}</small>
+                                            {% endfor %}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Payment Status <span class="text-danger">*</span></label>
+                                        {{ form.payment_status(class="form-select") }}
+                                        {% if form.payment_status.errors %}
+                                        <div class="text-danger">
+                                            {% for error in form.payment_status.errors %}
+                                            <small>{{ error }}</small>
+                                            {% endfor %}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Payment Method <span class="text-danger">*</span></label>
+                                        {{ form.payment_method(class="form-select") }}
+                                        {% if form.payment_method.errors %}
+                                        <div class="text-danger">
+                                            {% for error in form.payment_method.errors %}
+                                            <small>{{ error }}</small>
+                                            {% endfor %}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Receipt Number</label>
+                                        {{ form.receipt_number(class="form-control") }}
+                                        {% if form.receipt_number.errors %}
+                                        <div class="text-danger">
+                                            {% for error in form.receipt_number.errors %}
+                                            <small>{{ error }}</small>
+                                            {% endfor %}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Remarks</label>
+                                        {{ form.remarks(class="form-control") }}
+                                    </div>
+                                </div>
+                                
+                                <div class="row mt-4">
+                                    <div class="col-12">
+                                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                            <a href="{{ url_for('view_student', student_id=student.id) }}" class="btn btn-secondary me-md-2">Cancel</a>
+                                            {{ form.submit(class="btn btn-success") }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Auto-calculate whether payment is full or partial
+    document.addEventListener('DOMContentLoaded', function() {
+        const amountField = document.getElementById('amount');
+        const statusField = document.getElementById('payment_status');
+        const monthlyFee = parseInt('{{ monthly_fee }}', 10);
+        
+        if (amountField && statusField) {
+            amountField.addEventListener('input', function() {
+                const amount = parseFloat(this.value) || 0;
+                if (amount >= monthlyFee) {
+                    statusField.value = 'Paid';
+                } else if (amount > 0) {
+                    statusField.value = 'Partially Paid';
+                } else {
+                    statusField.value = 'Unpaid';
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

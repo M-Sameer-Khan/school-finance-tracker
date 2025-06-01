@@ -3,12 +3,12 @@
 {% block content %}
 <!-- Page Header -->
 <div class="mb-8 bg-white p-6 rounded-lg shadow-md border-l-4 border-primary-500">
-    <h1 class="text-2xl font-bold gradient-text">Financial Overview</h1>
-    <p class="text-gray-600 mt-2">Track your school's financial performance at a glance</p>
+    <h1 class="text-2xl font-bold gradient-text">School Management Dashboard</h1>
+    <p class="text-gray-600 mt-2">Track your school's finances and student fee management at a glance</p>
 </div>
 
 <!-- Financial Summary Cards -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+<div class="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
     <!-- Income Card -->
     <div class="bg-gradient-to-br from-blue-500 to-blue-600 text-white overflow-hidden shadow-lg rounded-xl card-shadow group transform transition-all duration-200 hover:scale-105">
         <div class="px-6 py-5">
@@ -74,10 +74,81 @@
             </div>
         </div>
     </div>
+    <!-- Student Count Card -->
+    <div class="bg-gradient-to-br from-purple-500 to-purple-600 text-white overflow-hidden shadow-lg rounded-xl card-shadow group transform transition-all duration-200 hover:scale-105">
+        <div class="px-6 py-5">
+            <div class="flex items-center">
+                <div class="flex-shrink-0 bg-white bg-opacity-30 rounded-full p-3 mr-4 group-hover:bg-opacity-40 transition-all duration-300">
+                    <svg class="h-7 w-7 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                </div>
+                <div class="flex-1">
+                    <div class="flex justify-between items-center mb-1">
+                        <h3 class="text-lg font-bold text-white tracking-wide">Total Students</h3>
+                    </div>
+                    <div class="text-3xl font-bold">
+                        {{ total_students }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Fee Collection Card -->
+    <div class="bg-gradient-to-br from-indigo-500 to-indigo-600 text-white overflow-hidden shadow-lg rounded-xl card-shadow group transform transition-all duration-200 hover:scale-105">
+        <div class="px-6 py-5">
+            <div class="flex items-center">
+                <div class="flex-shrink-0 bg-white bg-opacity-30 rounded-full p-3 mr-4 group-hover:bg-opacity-40 transition-all duration-300">
+                    <svg class="h-7 w-7 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                </div>
+                <div class="flex-1">
+                    <div class="flex justify-between items-center mb-1">
+                        <h3 class="text-lg font-bold text-white tracking-wide">Fee Collected</h3>
+                    </div>
+                    <div class="text-3xl font-bold">
+                        ${{ total_fee_collected|round(2) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Action Buttons -->
+<div class="mb-8">
+    <div class="flex flex-wrap gap-4">
+        <a href="{{ url_for('fees_dashboard') }}" class="bg-gradient-to-r from-indigo-500 to-indigo-600 text-white px-4 py-2 rounded-lg shadow hover:shadow-lg transition-all duration-300 flex items-center">
+            <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+            </svg>
+            Fee Dashboard
+        </a>
+        <a href="{{ url_for('student_list') }}" class="bg-gradient-to-r from-purple-500 to-purple-600 text-white px-4 py-2 rounded-lg shadow hover:shadow-lg transition-all duration-300 flex items-center">
+            <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+            Manage Students
+        </a>
+        <a href="{{ url_for('add_student') }}" class="bg-gradient-to-r from-green-500 to-green-600 text-white px-4 py-2 rounded-lg shadow hover:shadow-lg transition-all duration-300 flex items-center">
+            <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            </svg>
+            Add New Student
+        </a>
+        <a href="{{ url_for('fee_report') }}" class="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white px-4 py-2 rounded-lg shadow hover:shadow-lg transition-all duration-300 flex items-center">
+            <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            Monthly Fee Report
+        </a>
+    </div>
 </div>
 
 <!-- Recent Transactions Section -->
-<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
     <!-- Recent Income -->
     <div>
         <div class="flex items-center justify-between mb-4">
@@ -198,6 +269,72 @@
                                         </svg>
                                         <p class="text-red-500 font-medium">No expense records found</p>
                                         <p class="text-gray-500 text-sm mt-1">Add your first expense record to get started!</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Fee Payments -->
+    <div>
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-lg font-bold gradient-text">Recent Fee Payments</h2>
+            <a href="{{ url_for('fees_dashboard') }}" class="text-sm font-medium bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-3 py-1 rounded-lg shadow-sm hover:shadow transition-all duration-300">View all</a>
+        </div>
+        <div class="bg-white shadow-lg overflow-hidden rounded-xl border border-purple-100">
+            <div class="bg-gradient-to-r from-indigo-500 to-purple-600 px-6 py-3">
+                <div class="flex items-center text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                    <h3 class="font-semibold">Fee Transactions</h3>
+                </div>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-purple-100">
+                    <thead class="bg-purple-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-semibold text-purple-700 uppercase tracking-wider">Student</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold text-purple-700 uppercase tracking-wider">Amount</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold text-purple-700 uppercase tracking-wider">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white">
+                        {% if recent_payments %}
+                            {% for payment in recent_payments %}
+                            <tr class="hover:bg-purple-50 transition-colors duration-150">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 h-8 w-8 rounded-full bg-purple-100 flex items-center justify-center">
+                                            <span class="text-purple-600 font-medium">{{ payment.student.first_name[0] }}</span>
+                                        </div>
+                                        <div class="ml-4">
+                                            <div class="text-sm font-medium text-gray-900">{{ payment.student.first_name }} {{ payment.student.last_name }}</div>
+                                            <div class="text-sm text-gray-500">Class {{ payment.student.current_class }}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">
+                                        $ {{ payment.amount }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ payment.payment_date.strftime('%Y-%m-%d') }}</td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="3" class="px-6 py-12 text-center">
+                                    <div class="flex flex-col items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-purple-200 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                                        </svg>
+                                        <p class="text-purple-500 font-medium">No fee payment records found</p>
+                                        <p class="text-gray-500 text-sm mt-1">Collect your first fee payment to get started!</p>
                                     </div>
                                 </td>
                             </tr>

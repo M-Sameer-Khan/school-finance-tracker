@@ -1,7 +1,7 @@
 # School Finance Tracker
 
 ## Overview
-A comprehensive web application for managing school finances with a beautiful UI. This application helps educational institutions track income, expenses, budgets, and generate financial reports.
+A comprehensive web application for managing school finances with a beautiful UI. This application helps educational institutions track income, expenses, budgets, generate financial reports, and manage student fees.
 
 ![Dashboard Preview](docs/dashboard.png)
 
@@ -12,11 +12,12 @@ A comprehensive web application for managing school finances with a beautiful UI
 - **Budget Allocation** - Set and monitor departmental budgets
 - **Financial Reporting** - Generate detailed financial reports and summaries
 - **Excel Import** - Import financial data from Excel spreadsheets
+- **Student Fee Management** - Manage student admission and fee collection
 
 ## Technology Stack
 - Python with Flask framework
 - SQLAlchemy ORM for database management
-- Modern UI with Tailwind CSS
+- Modern UI with Tailwind CSS and Bootstrap
 - Responsive design for all devices
 
 ## Setup and Installation
@@ -64,13 +65,17 @@ A comprehensive web application for managing school finances with a beautiful UI
 - Username: `admin`
 - Password: `SchoolFinance2025!`
 
+## Student Fee Management
+- Add students with complete admission form data
+- Track fee payments by class and month
+- Generate payment receipts and reports
+- View student payment history
+
 ## Contributing
 Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details.
-- Windows 10/11
-- Python 3.8+ installed
 
 ### Installation Methods
 
@@ -99,10 +104,6 @@ python init_app.py
 ```bash
 python run.py
 ```
-
-### First Login
-- Username: `admin`
-- Password: `SchoolFinance2025!`
 
 ### Troubleshooting Common Issues
 
@@ -139,24 +140,7 @@ python run.py
 - Application will start automatically
 - Open browser and go to `http://localhost:5000`
 
-### First Login
-- Username: admin
-- Password: SchoolFinance2025!
-
 **IMPORTANT**: Change the default password after first login!
-
-## First-time Setup
-- Create an admin user through the Python shell or add a user management route
-
-## Excel Import
-- Navigate to the 'Import' page after logging in
-- Prepare an Excel file with three sheets:
-  1. 'Income' sheet with columns: Source, Amount, Date, Description
-  2. 'Expenses' sheet with columns: Category, Amount, Date, Description
-  3. 'Budget' sheet with columns: Category, Allocated Amount, Fiscal Year, Description
-- First row should be headers, subsequent rows are data
-- Dates should be in 'YYYY-MM-DD' format
-- Click 'Import' and upload your Excel file
 
 ## Security Notes
 - Change the secret key in `app/__init__.py`
@@ -166,4 +150,5 @@ python run.py
 - Flask
 - SQLAlchemy
 - Bootstrap
+- Tailwind CSS
 - Flask-Login

@@ -1,0 +1,229 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Monthly Fee Report</h1>
+        <div>
+            <button onclick="window.print()" class="btn btn-info">
+                <i class="fas fa-print"></i> Print Report
+            </button>
+            <a href="{{ url_for('fee_dashboard') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+        </div>
+    </div>
+    
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Generate Report</h5>
+        </div>
+        <div class="card-body">
+            <form method="GET" action="{{ url_for('monthly_fee_report') }}" class="row g-3">
+                <div class="col-md-3">
+                    {{ form.month(class="form-select") }}
+                </div>
+                <div class="col-md-3">
+                    {{ form.year(class="form-select") }}
+                </div>
+                <div class="col-md-3">
+                    {{ form.class_name(class="form-select") }}
+                </div>
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-search"></i> Generate
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    {% if report_data %}
+    <div class="card">
+        <div class="card-header bg-success text-white">
+            <h5 class="mb-0">
+                Fee Collection Report - 
+                {% set month_names = ['January', 'February', 'March', 'April', 'May', 'June', 
+                                    'July', 'August', 'September', 'October', 'November', 'December'] %}
+                {{ month_names[selected_month-1] }} {{ selected_year }}
+                {% if selected_class %}
+                (Class: {{ selected_class }})
+                {% endif %}
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="card bg-info text-white">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Total Students</h5>
+                            <h2 class="card-text">{{ report_data.total_students }}</h2>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card bg-success text-white">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Total Collected</h5>
+                            <h2 class="card-text">Rs. {{ report_data.total_collected }}</h2>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card bg-danger text-white">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Total Pending</h5>
+                            <h2 class="card-text">Rs. {{ report_data.total_pending }}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header bg-success text-white">
+                            <h6 class="mb-0">Paid</h6>
+                        </div>
+                        <div class="card-body text-center">
+                            <h3>{{ report_data.status_count.paid }}</h3>
+                            <p>Students</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header bg-warning">
+                            <h6 class="mb-0">Partially Paid</h6>
+                        </div>
+                        <div class="card-body text-center">
+                            <h3>{{ report_data.status_count.partial }}</h3>
+                            <p>Students</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header bg-danger text-white">
+                            <h6 class="mb-0">Unpaid</h6>
+                        </div>
+                        <div class="card-body text-center">
+                            <h3>{{ report_data.status_count.unpaid }}</h3>
+                            <p>Students</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>GR Number</th>
+                            <th>Student Name</th>
+                            <th>Father Name</th>
+                            <th>Class</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Payment Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for student_data in report_data.students %}
+                        <tr class="
+                            {% if student_data.status == 'Paid' %}
+                            table-success
+                            {% elif student_data.status == 'Partially Paid' %}
+                            table-warning
+                            {% else %}
+                            table-danger
+                            {% endif %}
+                            ">
+                            <td>{{ student_data.gr_number }}</td>
+                            <td>
+                                <a href="{{ url_for('view_student', student_id=student_data.id) }}">
+                                    {{ student_data.name }}
+                                </a>
+                            </td>
+                            <td>{{ student_data.father_name }}</td>
+                            <td>{{ student_data.class_name }}</td>
+                            <td>Rs. {{ student_data.amount|default(0, true) }}</td>
+                            <td>
+                                <span class="badge 
+                                {% if student_data.status == 'Paid' %}
+                                bg-success
+                                {% elif student_data.status == 'Partially Paid' %}
+                                bg-warning
+                                {% else %}
+                                bg-danger
+                                {% endif %}
+                                ">
+                                    {{ student_data.status }}
+                                </span>
+                            </td>
+                            <td>{{ student_data.payment_date|default('Not Paid', true) }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        Please select month, year, and class (optional) to generate a report.
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    @media print {
+        .btn, form, .nav, .navbar {
+            display: none;
+        }
+        
+        .card {
+            border: 1px solid #dee2e6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .card-header {
+            background-color: #f8f9fa !important;
+            color: #212529 !important;
+            border-bottom: 1px solid #dee2e6;
+            padding: 0.75rem 1.25rem;
+        }
+        
+        .table-dark th {
+            background-color: #f8f9fa !important;
+            color: #212529 !important;
+            border: 1px solid #dee2e6;
+        }
+        
+        .badge {
+            border: 1px solid #dee2e6;
+        }
+        
+        .table {
+            width: 100%;
+            margin-bottom: 1rem;
+            color: #212529;
+            border-collapse: collapse;
+        }
+        
+        .table th,
+        .table td {
+            padding: 0.75rem;
+            border: 1px solid #dee2e6;
+        }
+        
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+    }
+</style>
+{% endblock %}

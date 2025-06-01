@@ -1,0 +1,263 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">Student Admission Form</h3>
+        </div>
+        <div class="card-body">
+            <form method="POST" action="{{ url_for('add_student') }}" enctype="multipart/form-data">
+                {{ form.hidden_tag() }}
+                
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h5 class="border-bottom pb-2">Basic Information</h5>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">G.R Number <span class="text-danger">*</span></label>
+                        {{ form.gr_number(class="form-control") }}
+                        {% if form.gr_number.errors %}
+                        <div class="text-danger">
+                            {% for error in form.gr_number.errors %}
+                            <small>{{ error }}</small>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Student Name <span class="text-danger">*</span></label>
+                        {{ form.name(class="form-control") }}
+                        {% if form.name.errors %}
+                        <div class="text-danger">
+                            {% for error in form.name.errors %}
+                            <small>{{ error }}</small>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Father Name <span class="text-danger">*</span></label>
+                        {{ form.father_name(class="form-control") }}
+                        {% if form.father_name.errors %}
+                        <div class="text-danger">
+                            {% for error in form.father_name.errors %}
+                            <small>{{ error }}</small>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h5 class="border-bottom pb-2">Class Information</h5>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Class <span class="text-danger">*</span></label>
+                        {{ form.class_name(class="form-select") }}
+                        {% if form.class_name.errors %}
+                        <div class="text-danger">
+                            {% for error in form.class_name.errors %}
+                            <small>{{ error }}</small>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h5 class="border-bottom pb-2">Personal Details</h5>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Date of Birth <span class="text-danger">*</span></label>
+                        {{ form.dob(class="form-control", type="date") }}
+                        {% if form.dob.errors %}
+                        <div class="text-danger">
+                            {% for error in form.dob.errors %}
+                            <small>{{ error }}</small>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Nationality</label>
+                        {{ form.nationality(class="form-control") }}
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Religion</label>
+                        {{ form.religion(class="form-select") }}
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Gender <span class="text-danger">*</span></label>
+                        {{ form.gender(class="form-select") }}
+                        {% if form.gender.errors %}
+                        <div class="text-danger">
+                            {% for error in form.gender.errors %}
+                            <small>{{ error }}</small>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">CNIC/Bay-Form</label>
+                        {{ form.cnic(class="form-control") }}
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Address <span class="text-danger">*</span></label>
+                        {{ form.address(class="form-control", rows=3) }}
+                        {% if form.address.errors %}
+                        <div class="text-danger">
+                            {% for error in form.address.errors %}
+                            <small>{{ error }}</small>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h5 class="border-bottom pb-2">Guardian Information</h5>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Guardian Type</label>
+                        {{ form.guardian_type(class="form-select") }}
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Guardian Name <span class="text-danger">*</span></label>
+                        {{ form.guardian_name(class="form-control") }}
+                        {% if form.guardian_name.errors %}
+                        <div class="text-danger">
+                            {% for error in form.guardian_name.errors %}
+                            <small>{{ error }}</small>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Relation</label>
+                        {{ form.guardian_relation(class="form-control") }}
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Phone <span class="text-danger">*</span></label>
+                        {{ form.guardian_phone(class="form-control") }}
+                        {% if form.guardian_phone.errors %}
+                        <div class="text-danger">
+                            {% for error in form.guardian_phone.errors %}
+                            <small>{{ error }}</small>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Email</label>
+                        {{ form.guardian_email(class="form-control") }}
+                        {% if form.guardian_email.errors %}
+                        <div class="text-danger">
+                            {% for error in form.guardian_email.errors %}
+                            <small>{{ error }}</small>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Occupation</label>
+                        {{ form.guardian_occupation(class="form-select") }}
+                    </div>
+                </div>
+                
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h5 class="border-bottom pb-2">Academic Record</h5>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Previous School</label>
+                        {{ form.previous_school(class="form-control") }}
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Last Exam Passed</label>
+                        {{ form.last_exam_passed(class="form-control") }}
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Marks Obtained</label>
+                        {{ form.last_exam_marks(class="form-control") }}
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Grade</label>
+                        {{ form.last_exam_grade(class="form-control") }}
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Year</label>
+                        {{ form.last_exam_year(class="form-control") }}
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="form-check mt-4">
+                            {{ form.transfer_certificate(class="form-check-input") }}
+                            <label class="form-check-label">
+                                Transfer Certificate (T.C.)
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h5 class="border-bottom pb-2">Documentation</h5>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="form-check">
+                            {{ form.student_pictures(class="form-check-input") }}
+                            <label class="form-check-label">
+                                2 Pictures of Student (1.5"×1.5")
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="form-check">
+                            {{ form.previous_result(class="form-check-input") }}
+                            <label class="form-check-label">
+                                1 Photocopy of Previous Result Card
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="form-check">
+                            {{ form.student_cnic(class="form-check-input") }}
+                            <label class="form-check-label">
+                                1 Photocopy of Student's Bay-Form
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="form-check">
+                            {{ form.father_cnic(class="form-check-input") }}
+                            <label class="form-check-label">
+                                1 Photocopy of Father's/Guardian's CNIC
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="form-check">
+                            {{ form.transfer_certificate_doc(class="form-check-input") }}
+                            <label class="form-check-label">
+                                1 Photocopy & Original Transfer Certificate(TC) of Last School
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{{ url_for('list_students') }}" class="btn btn-secondary me-md-2">Cancel</a>
+                            {{ form.submit(class="btn btn-primary") }}
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
